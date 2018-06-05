@@ -7,9 +7,10 @@ let apiHopst = `${location.protocol}//${location.host}/api/`;
 
 if (process.env.NODE_ENV === 'development') {
   console.log('开发');
+
 } else {
   console.log('生产');
-  apiHopst = `${location.protocol}//${location.host}`;
+  apiHopst = 'http://localhost:4000';
   console.log(apiHopst);
 }
 

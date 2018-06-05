@@ -6,6 +6,18 @@ import './ui';
 
 Vue.config.productionTip = false;
 
+router.beforeEach((to, from, next) => {
+  if (!window.sessionStorage.getItem('token')) {
+    if (to.path === '/login' || to.path === '/register') {
+      next();
+    } else {
+      next('/login');
+    }
+  } else {
+    next();
+  }
+});
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

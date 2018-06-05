@@ -2,13 +2,35 @@
   <div class="index-wrapper">
     <div class="top"><a href="javascript:void(0)" @click="logout">注销</a></div>
     <div class="body">
-      欢迎使用node.js!您已登录
+      欢迎使用node.js!!!!!!!!!{{message}}
     </div>
   </div>
 </template>
 
 <script>
+import home from './../../api/home';
+
 export default {
+  data() {
+    return {
+      message: '',
+    };
+  },
+  mounted() {
+    home.home().then((res) => {
+      if (res.data.code === 200) {
+        this.message = res.data.message;
+      }
+    });
+  },
+  methods: {
+    logout() {
+      window.sessionStorage.removeItem('token');
+      this.$router.push({
+        path: '/login',
+      });
+    },
+  },
 };
 </script>
 

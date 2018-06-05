@@ -2,9 +2,9 @@ import api from './index';
 
 const path = {
   // 注册
-  addUser: '/addUser',
+  register: '/admin/register',
   // 注销
-  login: '/login',
+  login: '/admin/login',
   // 注销
   logout: '/user/logout',
 };

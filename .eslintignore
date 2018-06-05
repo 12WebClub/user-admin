@@ -4,4 +4,4 @@
 /*.js
 src/router/*.js
 /src/config.js
-/src/api/user.js
+/src/api/admin.js

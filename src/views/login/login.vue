@@ -24,8 +24,9 @@
 </template>
 
 <script>
+import axios from 'axios';
 import md5 from 'js-md5';
-import user from './../../api/user';
+import config from './../../config';
 
 export default {
   data() {
@@ -52,21 +53,37 @@ export default {
         if (valid) {
           this.loading = true;
           this.ruleForm.password = md5(this.ruleForm.password);
-          user.login(this.ruleForm).then((res) => {
-            if (res.data.code === 200) {
-              this.$router.push({ path: '/index' });
-              this.$message({
-                message: res.data.message,
-                type: 'success',
+          // 登录
+          axios.post(`${config.apiHopst}/admin/login`, this.ruleForm, {
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            transformRequest: [(data) => {
+              // Do whatever you want to transform the data
+              let ret = '';
+              Object.keys(data).forEach((value) => {
+                ret += `${encodeURIComponent(value)}=${encodeURIComponent(data[value])}&`;
               });
-            } else {
-              this.$message({
-                message: res.data.message,
-                type: 'error',
-              });
-            }
-            this.loading = false;
-          });
+              const newRet = ret.slice(0, ret.length - 1);
+              return newRet;
+            }],
+          })
+            .then((res) => {
+              if (res.data.code === 200) {
+                window.sessionStorage.setItem('token', res.data.token);
+                this.$router.push({ path: '/index' });
+                this.$message({
+                  message: res.data.message,
+                  type: 'success',
+                });
+              } else {
+                this.$message({
+                  message: res.data.message,
+                  type: 'error',
+                });
+              }
+              this.loading = false;
+            });
         }
       });
     },
